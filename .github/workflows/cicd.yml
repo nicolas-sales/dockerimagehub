@@ -6,7 +6,14 @@ on:
     pull_request:
         branches: [main]
 
-jobs:                                          # Le premier job, appelé build-and-test, tourne sur un environnement Ubuntu (machine virtuelle hébergée par GitHub).
+jobs:              # Le premier job, appelé build-and-test, tourne sur un environnement Ubuntu (machine virtuelle hébergée par GitHub).
+    dockerbuild:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - name: Build the Docker Image
+          run: docker build . --file Dockerfile --tag workflow-test:$(date +%s)
+
     build-and-test:                            # unit testing
         runs-on: ubuntu-latest                 # container
 
